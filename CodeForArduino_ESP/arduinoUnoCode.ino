@@ -1,13 +1,7 @@
 #include<Wire.h>
-//#include<LiquidCrystal_I2C.h>
 #include<Servo.h>
 
-/*const int  en = 2, rw = 1, rs = 0, d4 = 4, d5 = 5, d6 = 6, d7 = 7, bl = 3;
- 
-const int i2c_addr = 0x27;
- 
-LiquidCrystal_I2C lcd(i2c_addr, en, rw, rs, d4, d5, d6, d7, bl, POSITIVE);
-*/
+
 Servo myServo;
 
 int Buzzer=3, Rspeed=5, Rneg=6, Rpos=7, Lpos=8, servoPin=9, Lneg=10, Lspeed=11, Trig=12, Echo=13, blockForwardMoves=0, currentServo=90, assistedMode=0;
@@ -20,9 +14,6 @@ char currentMove='S';
 
 void setup() 
 {
-  //lcd.begin(16,2);
-  //lcd.setCursor(0,0);
-  //lcd.print("Mode: Free");
   Serial.begin(115200);
   myServo.attach(9);
   pinMode(Trig,OUTPUT);
@@ -53,7 +44,6 @@ void loop()
         {
           myServo.write(90);
           currentServo=90;
-          //delay(100);                    <-------
         }
         digitalWrite(Trig,LOW);
         delayMicroseconds(2);
@@ -62,10 +52,6 @@ void loop()
         digitalWrite(Trig,LOW);
         float duration=pulseIn(Echo,HIGH);
         float distance=(duration/2)*0.0343;
-        //lcd.setCursor(0,1);
-        //lcd.print("Distance: ");
-        //int distanceInt=distance;
-        //lcd.print(distanceInt);
         if (distance<=crashZone)
         {
           digitalWrite(Rpos,LOW);
@@ -83,7 +69,6 @@ void loop()
         {
           myServo.write(130);
           currentServo=130;
-          //delay(100);                         <-----
         }
         digitalWrite(Trig,LOW);
         delayMicroseconds(2);
@@ -92,10 +77,6 @@ void loop()
         digitalWrite(Trig,LOW);
         float duration=pulseIn(Echo,HIGH);
         float distance=(duration/2)*0.0343;
-        //lcd.setCursor(0,1);
-        //lcd.print("Distance: ");
-        //int distanceInt=distance;
-        //lcd.print(distanceInt);
         if (distance<=crashZone)
         {
           digitalWrite(Rpos,LOW);
@@ -113,7 +94,6 @@ void loop()
         {
           myServo.write(50);
           currentServo=50;
-          //delay(100);                        <------
         }
         digitalWrite(Trig,LOW);
         delayMicroseconds(2);
@@ -264,18 +244,12 @@ void loop()
   {
    
       myServo.write(90);
-      /*lcd.clear();
-      lcd.setCursor(0,0);
-      lcd.print("Mode: Assisted");*/
       assistedMode=1;
   }
   else if(charRead=='J')      //ASSISTED MODE OFF
   {  
       blockForwardMoves=0;
       myServo.write(90);
-     /* lcd.clear();
-      lcd.setCursor(0,0);
-      lcd.print("Mode: Free");*/
       assistedMode=0;
   }
   else
@@ -301,10 +275,4 @@ void loop()
   }
   crashZone=finalInt + crashOffset;
   currentMove=charRead;
-  /*lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print(charRead);
-  lcd.setCursor(0,1);
-  lcd.print(crashZone);
-  */
 }
